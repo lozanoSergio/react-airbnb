@@ -1,31 +1,32 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+
+import { Provider } from 'react-redux';
+
 import { Header } from './shared/Header';
+import RentalList from './components/rental/RentalList';
+import { RentalDetail } from './components/rental/RentalDetail';
+
 import './App.css';
+
+const store = require('./reducers').init();
 
 class App extends Component {
   render() {
+
     return (
-      <div className="App">
-        <Header/>
-        <div className="container">
-          <section id="rentalListing">
-            <h1 class="page-title">Your Home All Around the World</h1>
-            <div class="row">
-              <div class="col-md-3 col-xs-6">
-                <div class="card bwm-card">
-                  <img class="card-img-top" src="http://via.placeholder.com/350x250"></img>
-                  <div class="card-block">
-                    <h6 class="card-subtitle">Whole Apartment &#183; New York</h6>
-                    <h4 class="card-title">Some nice apartment</h4>
-                    <p class="card-text">$240 per Night &#183; Free Cancelation</p>
-                    <a href="" class="card-link">More Info</a>
-                  </div>
-                </div>
-              </div>
+      <Provider store={store}>
+        <BrowserRouter>
+          <div className="App">
+            <Header/>
+            <div className="container">
+              <Route exact path='/' render={() => <Redirect to='/rentals' /> }/>
+              <Route exact path='/rentals' component={RentalList}/>
+              <Route exact path='/rentals/:id' component={RentalDetail}/>
             </div>
-          </section>
-        </div>
-      </div>
+          </div>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
